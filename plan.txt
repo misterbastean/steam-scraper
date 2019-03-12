@@ -1,0 +1,47 @@
+A web scraper that collects data from Steam's sales and updates a database. This will be used as a backend
+for a webapp that displays price data over time, as well as allowing users to setup alerts for when a specific
+game is being sold under a specified price.
+
+
+Plan
+1. Query the Steam store sales page (https://store.steampowered.com/search/?specials=1&page=x where "x" is the page number)
+2. Parse using BeautifulSoup to pull out the data (see model below)
+3. Save to a SQL database
+4. This will need to be in a loop that goes through each page of the sales store.
+    4a. This will likely require try/except because of variable numbers of pages
+
+=================
+Data Models
+=================
+
+Game
+{
+    _id: String,
+    gameName: String,
+    releasedDate: Date,
+    rating: Int,
+    platform: [String],  # Win, Mac, Other
+    originalPrice: [{
+        date: Date,
+        price: Int
+    }],
+    discountedPrice: [{
+        date: Date,
+        price: Int
+    }],
+}
+
+User
+{
+    _id: String,
+    username: String,
+    password: String, # Hashed
+    email: String, # Where the user wants alerts to be sent
+    gameList: [
+        {
+            gameId: _id, # From Game model
+            gameName: String,
+            maxPrice: Int # When price is below this, send the user an alert
+        }
+    ]
+}

@@ -1,9 +1,13 @@
 from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen as uReq
-from pymongo import MongoClient
+from mongoengine import *
 from datetime import datetime
+from config import config
 
 baseUrl = "https://store.steampowered.com/search/?specials=1&page="
+
+# Connect to MongoDB
+db = connect('steam-scrape', host=f'mongodb://{config["username"]}:{config["password"]}@ds145039.mlab.com', port=45039)
 
 # Create connection, read raw html, close connection
 uClient = uReq(baseUrl + "1")
@@ -48,4 +52,5 @@ for i, product in enumerate(search_results):
         print("**********Problem with iteration " + str(i) + "**********")
         print(e)
 
-
+# Close DB connection
+db.close()

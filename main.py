@@ -21,6 +21,22 @@ class Games(Document):
 
 
 # ===========================
+# Secondary Functions
+# ===========================
+def parsePlatforms(product):
+    platforms = []
+    platforms_raw = product.findAll("span", "platform_img")
+    for span in platforms_raw:
+        if "win" in str(span):
+            platforms.append("win")
+        if "mac" in str(span):
+            platforms.append("mac")
+        if "linux" in str(span):
+            platforms.append("linux")
+    return platforms
+
+
+# ===========================
 # Main Function
 # ===========================
 def main():
@@ -40,17 +56,7 @@ def main():
             name = product.find("span", "title").text.strip()
             original_price = int(str(product.find("strike")).replace("<strike>", "").replace("</strike>", "").replace("$", "").replace(".", ""))
             sale_price = int(str(product.find("div", "search_price").contents[3]).replace("$", "").replace(".", "").strip())
-
-            # Parse platforms
-            platforms = []
-            platforms_raw = product.findAll("span", "platform_img")
-            for span in platforms_raw:
-                if "win" in str(span):
-                    platforms.append("win")
-                if "mac" in str(span):
-                    platforms.append("mac")
-                if "linux" in str(span):
-                    platforms.append("linux")
+            platforms = parsePlatforms(product)
 
             game_data = {
                     "gameName": name,
@@ -62,13 +68,12 @@ def main():
                     }],
                 }
 
-            if Games.objects(gameName=game_data['gameName']):
+            if Games.objects(gameName=game_data['gameName']):  # If there's already a db entry for the game title...
                 # Push new price data
                 updatedObject = (
                     Games.objects(gameName=game_data['gameName'])
                     .modify(push__discountedPrice=game_data["discountedPrice"][0])
                 )
-                print(updatedObject)
                 print("Updated")
             else:
                 # Create Games document and write to DB
@@ -82,8 +87,6 @@ def main():
         except Exception as e:
             print("**********Problem with iteration " + str(i) + "**********")
             print(e)
-    # End search results for loop
-
 
     # Close DB connection
     db.close()

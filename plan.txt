@@ -6,7 +6,7 @@ game is being sold under a specified price.
 Plan
 1. Query the Steam store sales page (https://store.steampowered.com/search/?specials=1&page=x where "x" is the page number)
 2. Parse using BeautifulSoup to pull out the data (see model below)
-3. Save to a SQL database
+3. Save to database
 4. This will need to be in a loop that goes through each page of the sales store.
     4a. This will likely require try/except because of variable numbers of pages
 

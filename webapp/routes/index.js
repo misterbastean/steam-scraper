@@ -3,7 +3,12 @@ const express = require('express'),
 
 // Index Page
 router.get('/', (req, res) => {
-  res.send('Index page')
+  res.render('index')
+});
+
+// User Page
+router.get('/user', (req, res) => {
+  res.send('user page')
 });
 
 module.exports = router;

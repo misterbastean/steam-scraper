@@ -7,6 +7,9 @@ const express         = require('express'),
       passport        = require('passport'),
       LocalStrategy   = require('passport-local');
 
+// Require Routes
+const indexRoutes = require('./routes/index'),
+      authRoutes = require('./routes/auth')
 
 
 

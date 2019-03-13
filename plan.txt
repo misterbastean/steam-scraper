@@ -18,8 +18,6 @@ Game
 {
     _id: String,
     gameName: String,
-    releasedDate: Date,
-    rating: Int,
     platform: [String],  # Win, Mac, Other
     originalPrice: [{
         date: Date,
